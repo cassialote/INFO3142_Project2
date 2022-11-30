@@ -1,36 +1,40 @@
 import spacy
 nlp = spacy.load('en_core_web_sm')
 
-#read in file
-fo = open('EmailLog.txt', 'r+')
-file = fo.read()
-doc = nlp(file)
-
-#create new file if it does not exist
-parsed = open("parsedText.txt", "w")   
-
-#parse file and write to txt
-for token in doc:
-    if token.like_email:
-        parsed.write(f'\nEmail: {token}')
-        parsed.write(f'\n=================================\n')
-
-    #extract POS
-    if token.tag_== 'VBG' or token.tag_== 'VB':
-        parsed.write(f'POS: {token}\n')
-
-    #extract entity tags
-    if token.ent_type != 0:
-        parsed.write(f'Entity: {token.text} - {token.ent_type_}\n')
-
-fo.close();
+#fo = open('EmailLog.txt', 'r+')
+#file = fo.read()
+#doc = nlp(file)
 
 
-#output
+#fo.close();
+
+
 with open("emailLog.txt", "r", encoding='utf-8') as testFile:
+    #read in file
     text = testFile.read()
     doc = nlp(text)
+    
+    #create new file if it does not exist
+    parsed = open("parsedText.txt", "w")   
 
+    #parse file and write to txt
+    for token in doc:
+        if token.like_email:
+            parsed.write(f'\nEmail: {token}')
+            parsed.write(f'\n=================================\n')
+
+        #extract POS
+        if token.tag_== 'VBG' or token.tag_== 'VB':
+            parsed.write(f'POS: {token}\n')
+
+        #extract entity tags
+        if token.ent_type != 0:
+            parsed.write(f'Entity: {token.text} - {token.ent_type_}\n')
+    
+    #close file after write
+    parsed.close()
+    
+    #output
     total = 0
     email = ''
     amount = 0
